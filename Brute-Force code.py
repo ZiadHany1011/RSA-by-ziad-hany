@@ -41,3 +41,25 @@ def encrypt_msg(msg, pub_e, pub_n):      # Define a function to encrypt a messag
 
 def decrypt_msg(ciphertext, priv_d, pub_n): # Define a function to decrypt a message using RSA decryption
     return [pow(ch, priv_d, pub_n) for ch in ciphertext] # Decrypt each ciphertext value using private exponent and modulus
+
+def brute_force_decrypt(e, n, encrypted_msg): # Define a function to brute-force decrypt an encrypted message
+    start_time = time.perf_counter()      # Record the start time for performance measurement
+    factors = factorise_modulus(n)        # Factorize the modulus into prime factors
+    if len(factors) != 2:                 # If the number of factors is not 2
+        print("Public key n requires two prime factors.")  # Print an error message
+        return None                        # Return None indicating decryption failure
+    p, q = factors                        # Get the prime factors
+    phi = (p - 1) * (q - 1)               # Calculate Euler's totient function (phi)
+    d = 1                                  # Initialize private exponent
+    while True:                           # Infinite loop until decryption is successful
+        if (e * d) % phi == 1:            # If the modular equation holds true
+            end_time = time.perf_counter() # Record the end time for performance measurement
+            decrypted_msg = ''            # Initialize decrypted message
+            for char in encrypted_msg.split(','):  # Iterate through each ciphertext character
+                decrypted_char = pow(int(char), d, n)  # Decrypt the character
+                decrypted_msg += chr(decrypted_char)   # Convert decrypted character to ASCII and append
+            print("Decrypted message:", decrypted_msg) # Print decrypted message
+            print("Private key exponent (d):", d)     # Print private key exponent
+            print("\nBrute Force Time: {:.6f} milliseconds".format((end_time - start_time) * 1000)) # Print decryption time
+            return decrypted_msg         # Return decrypted message
+        d += 1                            # Increment private exponent for next iteration
