@@ -16,3 +16,9 @@ def modular_inverse(e, n):
     if gcd != 1:                          # If gcd is not 1, modular inverse does not exist
         raise ValueError('Modular inverse does not exist')
     return x0 % n                         # Return the modular inverse of e
+
+def factorise_modulus(n):
+    """Factorize modulus into its prime factors."""
+    for i in range(2, int(math.sqrt(n)) + 1):  # Iterate from 2 to square root of n
+        if n % i == 0:                    # If n is divisible by i
+            return i, n // i              # Return the factors i and n//i
