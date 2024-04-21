@@ -9,3 +9,10 @@ def extended_gcd(a, b):
         x0, x1 = x1, x0 - q * x1          # Update x values
         y0, y1 = y1, y0 - q * y1          # Update y values
     return a, x0, y0                      # Return gcd and coefficients
+
+def modular_inverse(e, n): 
+    """Calculate the modular inverse of e modulo n."""
+    gcd, x0, y0 = extended_gcd(e, n)      # Compute extended GCD of e and n
+    if gcd != 1:                          # If gcd is not 1, modular inverse does not exist
+        raise ValueError('Modular inverse does not exist')
+    return x0 % n                         # Return the modular inverse of e
