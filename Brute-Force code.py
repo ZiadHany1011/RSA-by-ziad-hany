@@ -17,3 +17,20 @@ def gcd_extended(a, b):                  # Define a function to perform extended
         x0, x1 = x1, x0 - q * x1         # Update x values
         y0, y1 = y1, y0 - q * y1         # Update y values
     return a, x0, y0                     # Return GCD and coefficients
+
+def generate_prime(bits_length):         # Define a function to generate a prime number of specified bit length
+    while True:                          # Continue generating until a prime number is found
+        prime = random.getrandbits(bits_length)  # Generate a random number of specified bit length
+        if is_prime(prime):              # Check if the generated number is prime
+            return prime                 # Return the prime number
+
+def factorise_modulus(n):               # Define a function to factorize modulus into prime factors
+    for i in range(2, int(math.sqrt(n)) + 1): # Iterate through numbers from 2 to square root of 'n'
+        if n % i == 0:                  # If 'n' is divisible by 'i'
+            return i, n // i            # Return 'i' and 'n // i' as factors of 'n'
+
+def encode_msg(msg):                     # Define a function to encode a message into a list of ASCII values
+    return [ord(ch) for ch in msg]       # Return a list of ASCII values of characters in the message
+
+def decode_msg(encoded_msg):             # Define a function to decode a list of ASCII values into a string
+    return "".join(chr(ch) for ch in encoded_msg)  # Convert ASCII values back to characters and join them into a string
