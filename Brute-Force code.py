@@ -63,3 +63,60 @@ def brute_force_decrypt(e, n, encrypted_msg): # Define a function to brute-force
             print("\nBrute Force Time: {:.6f} milliseconds".format((end_time - start_time) * 1000)) # Print decryption time
             return decrypted_msg         # Return decrypted message
         d += 1                            # Increment private exponent for next iteration
+
+# Input for the bit length for prime generation
+bits = int(input("Enter the bit length for prime generation: "))
+
+# Generate two distinct prime numbers
+p = generate_prime(bits)
+q = generate_prime(bits)
+
+# Ensure p and q are different
+while p == q:
+    q = generate_prime(bits)
+
+# Calculate n and Euler's totient function phi(n)
+n = p * q
+phi = (p - 1) * (q - 1)
+
+# Generate a random public exponent e
+e = random.randint(3, phi - 1)
+
+# Ensure e is coprime with phi
+while e < phi:
+    if gcd_extended(e, phi)[0] == 1:
+        gcd, x, y = gcd_extended(e, phi)
+        d = x % phi
+        break
+    else:
+        e += 1
+
+# Input message to be encrypted
+msg = input("Enter the message you want to send: ")
+
+# Display public and private keys along with other details
+print("Public Key:")
+print("  - n:", n)
+print("  - e:", e)
+print("Private Key:")
+print("  - d:", d)
+print("  - Totient:", phi)
+print("Prime Factors:")
+print("  - p:", p)
+print("  - q:", q)
+
+# Encrypt the message
+ciphertext = encrypt_msg(msg, e, n)
+print("Encrypted Message:", ciphertext)
+
+# Input for public key and encrypted message for brute-force decryption
+e_input = int(input("Enter the e of the public key: "))
+n_input = int(input("Enter the n of the public key: "))
+encrypted_message = input("Enter the encrypted message: ")
+
+# Decrypt the message using brute force
+decrypted_message = brute_force_decrypt(e_input, n_input, encrypted_message)
+
+# Check if decryption was successful
+if decrypted_message is None:
+    print("Decryption failed. Consider using a smaller key size for faster brute-force attempts.")
