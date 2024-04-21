@@ -34,3 +34,10 @@ def encode_msg(msg):                     # Define a function to encode a message
 
 def decode_msg(encoded_msg):             # Define a function to decode a list of ASCII values into a string
     return "".join(chr(ch) for ch in encoded_msg)  # Convert ASCII values back to characters and join them into a string
+
+def encrypt_msg(msg, pub_e, pub_n):      # Define a function to encrypt a message using RSA encryption
+    encoded_msg = encode_msg(msg)        # Encode the message into a list of ASCII values
+    return [pow(ch, pub_e, pub_n) for ch in encoded_msg]  # Encrypt each ASCII value using public exponent and modulus
+
+def decrypt_msg(ciphertext, priv_d, pub_n): # Define a function to decrypt a message using RSA decryption
+    return [pow(ch, priv_d, pub_n) for ch in ciphertext] # Decrypt each ciphertext value using private exponent and modulus
